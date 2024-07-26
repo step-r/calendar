@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .litepicker .container__main {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .litepicker .month-item {
+            margin: 0 10px;
+        }
+
+        .litepicker .day-item {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .litepicker .container__months.columns-2 {
+            width: auto;
+        }
+
+        .litepicker .day-item.is-selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .litepicker .day-item.is-previous-month,
+        .litepicker .day-item.is-next-month {
+            color: #d3d3d3;
+        }
+
+        .litepicker .day-item.is-disabled {
+            background-color: #f0f0f0;
+            color: #d3d3d3;
+        }
+
+        .litepicker .day-item:not(.is-disabled):hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .litepicker .container__months {
+            background: none;
+            box-shadow: none;
+        }
+
+        #ticket-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .litepicker .container__months .month-item:last-child .button-next-month,
+        .litepicker .container__months .month-item:first-child .button-previous-month {
+            cursor: pointer;
+        }
+        .day-item.weekday {
+            background-color: #d4edda; 
+        }
+        .day-item.weekend {
+            background-color: #fff3cd; 
+        }
+        .litepicker .container__days .day-item{
+            cursor: pointer;
+        }
+        .litepicker .container__days .day-item.is-locked{
+            background: none;
+        }
+        #ticket-section p,
+        #ticket-section label,
+        #ticket-section select,
+        #ticket-section button {
+            margin: 10px 0;
+        }
+
+        #ticket-section button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #ticket-section button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="datepicker"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+    <script>
+        const picker = new Litepicker({
+            element: document.querySelector('.datepicker'),
+            inlineMode: true,
+            singleMode: true,
+            numberOfMonths: 2,
+            numberOfColumns: 2,
+            minDate: new Date(),
+            setup: (picker) => {
+                picker.on('render', () => {
+                    const days = document.querySelectorAll('.litepicker .day-item');
+                    days.forEach(day => {
+                        const date = new Date(day.dataset.time * 1000);
+                        const dayOfWeek = date.getUTCDay();
+                        if (dayOfWeek === 3 || dayOfWeek === 2) {
+                            day.classList.add('weekend');
+                        } else {
+                            day.classList.add('weekday');
+                        }
+                    });
+                });
+
+                picker.on('selected', (date) => {
+                    const selectedDate = date.format('YYYY-MM-DD');
+                    document.getElementById('selected-date').textContent = selectedDate;
+                    document.getElementById('ticket-section').style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
