@@ -30,7 +30,8 @@
             align-items: center;
             height: 100vh;
             width: 100vw;
-            background: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            inset: 0;
         }
 
         .dataPicker-container {
@@ -133,6 +134,8 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            position: relative;
+            z-index: 100;
         }
 
         .dataPicker-popup-header-text {
@@ -140,6 +143,7 @@
             line-height: 1.5rem;
             font-weight: 700;
             margin-bottom: 10px;
+            margin-top: 10px;
         }
 
         .dataPicker-popup-header_description {
@@ -202,27 +206,94 @@
         .item-color.green {
             background: #d4edda;
         }
+
         .item-color.yellow {
+            background: #d7cfa5;
+        }
+
+        .item-color.light-yellow {
             background: #fff3cd;
         }
-        .item-color.light-yellow {
-            background: #fff4bf;
-        }
+
         .item-color.pink {
             background: #fed4be;
         }
+
         .item-color.orange {
             background: #F8B400;
         }
-    .price-value{
-        line-height: 1;
-    }
+
+        .price-value {
+            line-height: 1;
+        }
+
+        .dataPicker-popup-blur {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
+        }
+
+        .dataPicker-next-button-container {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .dataPicker-next-button-container button.dataPicker-next-button {
+            background: none;
+            border-radius: 7px;
+            color: black;
+            border: 1px solid black;
+            outline: none;
+            padding: 8px 40px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+        .dataPicker-popup-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            inset: 0;
+        }
+
+        .dataPicker-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .dataPicker-popup-blur {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-<div class="dataPicker-popup">
+<button id="open-popup-button">Open Popup</button>
+
+<div class="dataPicker-popup-container" id="popup-container">
+    <div class="dataPicker-popup-blur" id="popup-blur"></div>
     <div class="dataPicker-container">
+        <button class="close-button" id="close-popup-button">&times;</button>
         <div class="dataPicker-popup-header">
             <h2 class="dataPicker-popup-header-text">Admission date</h2>
             <span class="dataPicker-popup-header_description">Admission prices vary depending on the date</span>
@@ -237,11 +308,11 @@
                     <p class="price-value">4,000</p>
                 </div>
                 <div class="prices-container-item">
-                    <div class="item-color yellow"></div>
+                    <div class="item-color light-yellow"></div>
                     <p class="price-value">4,200</p>
                 </div>
                 <div class="prices-container-item">
-                    <div class="item-color light-yellow"></div>
+                    <div class="item-color yellow"></div>
                     <p class="price-value">4,400</p>
                 </div>
                 <div class="prices-container-item">
@@ -254,9 +325,11 @@
                 </div>
             </div>
         </div>
+        <div class="dataPicker-next-button-container">
+            <button class="dataPicker-next-button">Next</button>
+        </div>
     </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 <script>
@@ -287,6 +360,18 @@
                 document.getElementById('ticket-section').style.display = 'block';
             });
         }
+    });
+
+    document.getElementById('open-popup-button').addEventListener('click', () => {
+        document.getElementById('popup-container').style.display = 'flex';
+    });
+
+    document.getElementById('popup-blur').addEventListener('click', () => {
+        document.getElementById('popup-container').style.display = 'none';
+    });
+
+    document.getElementById('close-popup-button').addEventListener('click', () => {
+        document.getElementById('popup-container').style.display = 'none';
     });
 </script>
 </body>
