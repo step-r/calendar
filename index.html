@@ -135,6 +135,7 @@
             flex-direction: column;
             position: relative;
             z-index: 100;
+            overflow-y: auto;
         }
 
         .dataPicker-popup-header-text {
@@ -285,6 +286,9 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
+        body.no-scroll {
+            overflow: hidden;
+        }
         
         @media screen and (max-width: 640px) {
             .litepicker .container__months.columns-2{
@@ -293,8 +297,7 @@
             .dataPicker-container{
                 width: 90%;
                 max-height: calc(100vh - 200px);
-                overflow-y: auto;
-                padding-top: 290px;
+                padding-top: 310px;
             }
             .prices-container{
                 justify-content: center;
@@ -377,17 +380,20 @@
             });
         }
     });
-
+    const body = document.body;
     document.getElementById('open-popup-button').addEventListener('click', () => {
         document.getElementById('popup-container').style.display = 'flex';
+        body.classList.add('no-scroll');
     });
 
     document.getElementById('popup-blur').addEventListener('click', () => {
         document.getElementById('popup-container').style.display = 'none';
+        body.classList.remove('no-scroll');
     });
 
     document.getElementById('close-popup-button').addEventListener('click', () => {
         document.getElementById('popup-container').style.display = 'none';
+        body.classList.remove('no-scroll');
     });
 </script>
 </body>
