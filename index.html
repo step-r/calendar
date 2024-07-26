@@ -284,6 +284,21 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
+        
+        @media screen and (max-width: 640px) {
+            .litepicker .container__months.columns-2{
+                justify-content: center;
+            }
+            .dataPicker-container{
+                width: 90%;
+                max-height: calc(100vh - 40px);
+                overflow-y: auto;
+                padding-top: 260px;
+            }
+            .dataPicker-popup-header{
+                display: none;
+            }
+        }
     </style>
 </head>
 
