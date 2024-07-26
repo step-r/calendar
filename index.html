@@ -7,14 +7,36 @@
     <title></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            margin: 0;
+        }
+
+        .litepicker .container__days .day-item {
+            line-height: 30px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .dataPicker-popup {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            width: 100vw;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .dataPicker-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
         }
 
         .litepicker .container__main {
@@ -27,8 +49,6 @@
         }
 
         .litepicker .day-item {
-            width: 30px;
-            height: 30px;
             line-height: 30px;
             text-align: center;
             border-radius: 4px;
@@ -72,30 +92,35 @@
         .litepicker .container__months .month-item:first-child .button-previous-month {
             cursor: pointer;
         }
+
         .day-item.weekday {
-            background-color: #d4edda; 
+            background-color: #d4edda;
         }
+
         .day-item.weekend {
-            background-color: #fff3cd; 
+            background-color: #fff3cd;
         }
-        .day-item.weekday:hover,.litepicker .container__days .day-item.is-start-date.is-end-date.weekday {
-            background-color: #56ec69!important;
+
+        .day-item.weekday:hover, .litepicker .container__days .day-item.is-start-date.is-end-date.weekday {
+            background-color: #9decb0 !important;
         }
-        .day-item.weekend:hover,.litepicker .container__days .day-item.is-start-date.is-end-date.weekend {
-            background-color: #ffe139!important;
+
+        .day-item.weekend:hover, .litepicker .container__days .day-item.is-start-date.is-end-date.weekend {
+            background-color: #f6e67f !important;
         }
-        .litepicker .container__days .day-item{
+
+        .litepicker .container__days .day-item {
             cursor: pointer;
         }
-        .litepicker .container__days .day-item.is-locked{
+
+        .litepicker .container__days .day-item.is-locked {
             background: none;
         }
-        .litepicker .container__days .day-item.is-locked:hover{
-            background: none!important;
-        }
-        .litepicker .container__days .day-item.is-start-date.is-end-date.weekday{
 
+        .litepicker .container__days .day-item.is-locked:hover {
+            background: none !important;
         }
+
         #ticket-section p,
         #ticket-section label,
         #ticket-section select,
@@ -103,56 +128,167 @@
             margin: 10px 0;
         }
 
-        #ticket-section button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 4px;
-            cursor: pointer;
+        .dataPicker-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
-        #ticket-section button:hover {
-            background-color: #0056b3;
+        .dataPicker-popup-header-text {
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
+
+        .dataPicker-popup-header_description {
+            font-size: 1rem;
+            line-height: 1.8rem;
+            font-weight: 400;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .dataPicker-popup-header {
+            width: 100%;
+        }
+
+        .prices-block {
+            padding: 24px;
+            line-height: 1.8rem;
+            font-weight: 400;
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            margin: 2.4rem 0 0;
+            width: 100%;
+        }
+
+        .prices-block-header {
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+            line-height: 1.9rem;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .prices-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .prices-container-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .item-color {
+            display: block;
+            width: 16px;
+            height: 16px;
+            margin-right: 2px;
+            border-radius: 5px;
+        }
+
+        .name-price {
+            margin-right: 5px;
+        }
+
+        .item-color.green {
+            background: #d4edda;
+        }
+        .item-color.yellow {
+            background: #fff3cd;
+        }
+        .item-color.light-yellow {
+            background: #fff4bf;
+        }
+        .item-color.pink {
+            background: #fed4be;
+        }
+        .item-color.orange {
+            background: #F8B400;
+        }
+    .price-value{
+        line-height: 1;
+    }
     </style>
 </head>
 
 <body>
+<div class="dataPicker-popup">
+    <div class="dataPicker-container">
+        <div class="dataPicker-popup-header">
+            <h2 class="dataPicker-popup-header-text">Admission date</h2>
+            <span class="dataPicker-popup-header_description">Admission prices vary depending on the date</span>
+        </div>
+        <div class="datepicker"></div>
+        <div class="prices-block">
+            <h3 class="prices-block-header">Entrance Pass</h3>
+            <div class="prices-container">
+                <div class="prices-container-item">
+                    <p class="name-price">Adults</p>
+                    <div class="item-color green"></div>
+                    <p class="price-value">4,000</p>
+                </div>
+                <div class="prices-container-item">
+                    <div class="item-color yellow"></div>
+                    <p class="price-value">4,200</p>
+                </div>
+                <div class="prices-container-item">
+                    <div class="item-color light-yellow"></div>
+                    <p class="price-value">4,400</p>
+                </div>
+                <div class="prices-container-item">
+                    <div class="item-color pink"></div>
+                    <p class="price-value">4,600</p>
+                </div>
+                <div class="prices-container-item">
+                    <div class="item-color orange"></div>
+                    <p class="price-value">4,800</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="datepicker"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
-    <script>
-        const picker = new Litepicker({
-            element: document.querySelector('.datepicker'),
-            inlineMode: true,
-            singleMode: true,
-            numberOfMonths: 2,
-            numberOfColumns: 2,
-            minDate: new Date(),
-            setup: (picker) => {
-                picker.on('render', () => {
-                    const days = document.querySelectorAll('.litepicker .day-item');
-                    days.forEach(day => {
-                        const date = new Date(day.dataset.time * 1000);
-                        const dayOfWeek = date.getUTCDay();
-                        if (dayOfWeek === 3 || dayOfWeek === 2) {
-                            day.classList.add('weekend');
-                        } else {
-                            day.classList.add('weekday');
-                        }
-                    });
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+<script>
+    const picker = new Litepicker({
+        element: document.querySelector('.datepicker'),
+        inlineMode: true,
+        singleMode: true,
+        numberOfMonths: 2,
+        numberOfColumns: 2,
+        minDate: new Date(),
+        setup: (picker) => {
+            picker.on('render', () => {
+                const days = document.querySelectorAll('.litepicker .day-item');
+                days.forEach(day => {
+                    const date = new Date(day.dataset.time * 1000);
+                    const dayOfWeek = date.getUTCDay();
+                    if (dayOfWeek === 3 || dayOfWeek === 2) {
+                        day.classList.add('weekend');
+                    } else {
+                        day.classList.add('weekday');
+                    }
                 });
+            });
 
-                picker.on('selected', (date) => {
-                    const selectedDate = date.format('YYYY-MM-DD');
-                    document.getElementById('selected-date').textContent = selectedDate;
-                    document.getElementById('ticket-section').style.display = 'block';
-                });
-            }
-        });
-    </script>
+            picker.on('selected', (date) => {
+                const selectedDate = date.format('YYYY-MM-DD');
+                document.getElementById('selected-date').textContent = selectedDate;
+                document.getElementById('ticket-section').style.display = 'block';
+            });
+        }
+    });
+</script>
 </body>
 
 </html>
