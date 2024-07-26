@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css">
     <style>
         body {
@@ -78,11 +78,23 @@
         .day-item.weekend {
             background-color: #fff3cd; 
         }
+        .day-item.weekday:hover,.litepicker .container__days .day-item.is-start-date.is-end-date.weekday {
+            background-color: #56ec69!important;
+        }
+        .day-item.weekend:hover,.litepicker .container__days .day-item.is-start-date.is-end-date.weekend {
+            background-color: #ffe139!important;
+        }
         .litepicker .container__days .day-item{
             cursor: pointer;
         }
         .litepicker .container__days .day-item.is-locked{
             background: none;
+        }
+        .litepicker .container__days .day-item.is-locked:hover{
+            background: none!important;
+        }
+        .litepicker .container__days .day-item.is-start-date.is-end-date.weekday{
+
         }
         #ticket-section p,
         #ticket-section label,
