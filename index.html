@@ -75,14 +75,28 @@
             justify-content: center;
             align-items: center;
         }
-
+        /*NEW*/
         .text-message {
             margin-top: 20px;
-            font-size: 18px;
+            font-size: 22px;
             color: #333;
             text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
         }
 
+        .text-message.fade-in {
+            opacity: 1;
+        }
+
+        .loader-container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+        }
+        /*END NEW*/
     </style>
 </head>
 <body>
@@ -113,15 +127,19 @@
         </div>
         <div class="popup-body">
 
-            <!--  --------------LOADER------------------->
-            <div class="loader-wrap">
-                <div class="loader-popup"></div>
-            </div>
-            <!--  --------------END LOADER------------------->
+            <!--  --------------NEW------------------->
+            <div class="loader-container">
+                <!--  --------------LOADER------------------->
+                <div class="loader-wrap">
+                    <div class="loader-popup"></div>
+                </div>
+                <!--  --------------END LOADER------------------->
 
-            <!--  --------------TEXT MESSAGE------------------->
-            <div class="text-message" id="text-message"></div>
-            <!--  --------------END TEXT MESSAGE------------------->
+                <!--  --------------TEXT MESSAGE------------------->
+                <div class="text-message" id="text-message"></div>
+                <!--  --------------END TEXT MESSAGE------------------->
+            </div>
+            <!--  --------------END NEW------------------->
 
         </div>
     </div>
@@ -139,12 +157,16 @@
     const messageElement = document.getElementById('text-message');
 
     function changeMessage() {
-        messageElement.textContent = messages[currentMessageIndex];
-        currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+        messageElement.classList.remove('fade-in');
+        setTimeout(() => {
+            messageElement.textContent = messages[currentMessageIndex];
+            messageElement.classList.add('fade-in');
+            currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+        }, 500);
     }
 
     setInterval(changeMessage, 3000);
-    changeMessage(); // Initial call to set the first message
+    changeMessage();
 </script>
 </body>
 </html>
