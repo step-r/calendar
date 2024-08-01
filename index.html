@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css">
     <style>
         * {
             margin: 0;
@@ -13,160 +13,487 @@
             box-sizing: border-box;
         }
 
-        .popup-wrapper {
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            overflow: hidden;
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .litepicker .container__days .day-item {
+            line-height: 30px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .dataPicker-popup {
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            width: 100vw;
             position: fixed;
-            top: 0;
-            left: 0;
-            padding: 15px;
+            inset: 0;
         }
 
-        .popup-main {
-            width: 500px;
-            min-height: 392px;
+        .dataPicker-container {
             background: white;
-            padding: 45px 35px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 20px;
+            border-radius: 20px;
         }
 
-        .popup-logo {
+        .litepicker .container__main {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .litepicker .month-item {
+            margin: 0 10px;
+        }
+
+        .litepicker .day-item {
+            line-height: 30px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .litepicker .container__months.columns-2 {
+            width: auto;
+        }
+
+        .litepicker .day-item.is-selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .litepicker .day-item.is-previous-month,
+        .litepicker .day-item.is-next-month {
+            color: #d3d3d3;
+        }
+
+        .litepicker .day-item.is-disabled {
+            background-color: #f0f0f0;
+            color: #d3d3d3;
+        }
+
+        .litepicker .day-item:not(.is-disabled):hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .litepicker .container__months {
+            background: none;
+            box-shadow: none;
+        }
+
+        #ticket-section {
+            padding: 20px 0;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .litepicker .container__months .month-item:last-child .button-next-month,
+        .litepicker .container__months .month-item:first-child .button-previous-month {
+            cursor: pointer;
+        }
+
+        .day-item.weekday {
+            background-color: #d4edda;
+        }
+
+        .day-item.weekend {
+            background-color: #fff3cd;
+        }
+
+        .day-item.weekday:hover, .litepicker .container__days .day-item.is-start-date.is-end-date.weekday {
+            background-color: #9decb0 !important;
+        }
+
+        .day-item.weekend:hover, .litepicker .container__days .day-item.is-start-date.is-end-date.weekend {
+            background-color: #f6e67f !important;
+        }
+
+        .litepicker .container__days .day-item {
+            cursor: pointer;
+        }
+
+        .litepicker .container__days .day-item.is-locked {
+            background: none;
+        }
+
+        .litepicker .container__days .day-item.is-locked:hover {
+            background: none !important;
+        }
+
+        #ticket-section p,
+        #ticket-section label,
+        #ticket-section select,
+        #ticket-section button {
+            margin: 5px 0;
+        }
+
+        .dataPicker-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .dataPicker-popup-header-text {
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .dataPicker-popup-header_description {
+            font-size: 1rem;
+            line-height: 1.8rem;
+            font-weight: 400;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .dataPicker-popup-header {
+            width: 100%;
+        }
+
+        .prices-block {
+            padding: 20px;
+            line-height: 1.8rem;
+            font-weight: 400;
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            margin: 2.4rem 0 0;
+            width: 100%;
+        }
+
+        .prices-block-header {
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+            line-height: 1.9rem;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .prices-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            gap: 20px;
+        }
+
+        .prices-container-item {
+            display: flex;
+            align-items: center;
+
+        }
+
+        .item-color {
+            display: block;
+            width: 16px;
+            height: 16px;
+            margin-right: 2px;
+            border-radius: 5px;
+        }
+
+        .name-price {
+            margin-right: 5px;
+        }
+
+        .item-color.green {
+            background: #d4edda;
+        }
+
+        .item-color.yellow {
+            background: #d7cfa5;
+        }
+
+        .item-color.light-yellow {
+            background: #fff3cd;
+        }
+
+        .item-color.pink {
+            background: #fed4be;
+        }
+
+        .item-color.orange {
+            background: #F8B400;
+        }
+
+        .price-value {
+            line-height: 1;
+        }
+
+        .dataPicker-popup-blur {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
+        }
+
+        .dataPicker-next-button-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            margin-top: 10px;
         }
 
-        .popup-logo .master {
-            width: 45px;
+        .dataPicker-next-button-container button.dataPicker-next-button {
+            background: none;
+            border-radius: 7px;
+            color: black;
+            border: 1px solid black;
+            outline: none;
+            padding: 8px 40px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+        .dataPicker-popup-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .popup-logo .bank {
+        .dataPicker-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 21px rgba(0, 0, 0, 0.7);
+        }
+
+        .dataPicker-popup-blur {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        #ticket-section {
+            padding: 20px 5px;
+            width: 100%;
+        }
+
+        .ticket-category {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .ticket-category label {
+            flex: 1;
+        }
+
+        .ticket-category button {
             width: 40px;
+            height: 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .ticket-category-counter{
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .loader-popup {
-            width: 50px;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            border: 8px solid;
-            border-color: #000 #0000;
-            animation: l1 1s infinite;
+        .ticket-category input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 0 10px;
         }
 
-        @keyframes l1 {
-            to {
-                transform: rotate(.5turn)
+        .total-sum-container{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .total-sum-label{
+            margin-left: 5px;
+        }
+        
+        #adult-minus:disabled, #child-minus:disabled{
+            background: #e6e6e6;
+            color: black;
+        }
+        
+        @media screen and (max-width: 640px) {
+            .litepicker .container__months.columns-2{
+                justify-content: center;
+            }
+            .dataPicker-container{
+                width: 90%;
+                max-height: calc(100vh - 200px);
+                padding-top: 330px;
+            }
+            .prices-container{
+                justify-content: center;
+            }
+            .dataPicker-popup-header{
+                padding-top: 40px;
             }
         }
-
-        .popup-body {
-            flex-grow: 1;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        /*NEW*/
-        .text-message {
-            margin-top: 20px;
-            font-size: 22px;
-            color: #333;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-
-        .text-message.fade-in {
-            opacity: 1;
-        }
-
-        .loader-container{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 50px;
-        }
-        /*END NEW*/
     </style>
 </head>
+
 <body>
-<div class="popup-wrapper">
-    <div class="popup-main">
-        <div class="popup-logo">
-            <svg width="41" height="37" viewBox="0 0 41 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M41 34H0V37H41V34Z" fill="black"/>
-                <path d="M12 15H9V28H4V31H37V28H32V15H29V28H22V13H19V28H12V15Z" fill="black"/>
-                <path d="M1.44096 11C0.772612 10 0.939272 9.5 1.44096 9C1.62508 8.8165 21 0 21 0V3L4.45004 11C4.45004 11 2.1093 12 1.44096 11Z"
-                      fill="black"/>
-                <path d="M40.4986 11C41.167 10 41.0003 9.5 40.4986 9C40.3145 8.8165 20.9396 0 20.9396 0V3L37.4895 11C37.4895 11 39.8303 12 40.4986 11Z"
-                      fill="black"/>
-            </svg>
+<button id="open-popup-button">Open Popup</button>
 
-
-            <svg viewBox="0 -9 58 58" fill="none" xmlns="http://www.w3.org/2000/svg" class="master">
-                <g id="SVGRepo_bgCarrier"></g>
-                <g id="SVGRepo_iconCarrier">
-
-                    <rect x="24.4592" y="6.07629" width="8.49438" height="15.2656" fill="#FF5F00"></rect>
-                    <path d="M24.9986 13.7105C24.9954 10.7311 26.3628 7.91582 28.7064 6.07631C24.7262 2.94823 19.0103 3.40386 15.5758 7.123C12.1414 10.8421 12.1414 16.5761 15.5758 20.2952C19.0103 24.0144 24.7262 24.47 28.7064 21.3419C26.3635 19.503 24.9962 16.6889 24.9986 13.7105Z"
-                          fill="#EB001B"></path>
-                    <path d="M44.4143 13.7104C44.4142 17.4273 42.2919 20.8178 38.9487 22.4421C35.6055 24.0663 31.6284 23.6391 28.7064 21.3419C31.0484 19.5014 32.4157 16.6877 32.4157 13.7091C32.4157 10.7305 31.0484 7.91675 28.7064 6.07626C31.6284 3.77903 35.6055 3.35182 38.9487 4.97606C42.2919 6.60031 44.4142 9.99085 44.4143 13.7077V13.7104Z"
-                          fill="#F79E1B"></path>
-                </g>
-            </svg>
+<div class="dataPicker-popup-container" id="popup-container">
+    <div class="dataPicker-popup-blur" id="popup-blur"></div>
+    <div class="dataPicker-container">
+        <button class="close-button" id="close-popup-button">&times;</button>
+        <div class="dataPicker-popup-header">
+            <h2 class="dataPicker-popup-header-text">Admission date</h2>
+            <span class="dataPicker-popup-header_description">Admission prices vary depending on the date</span>
         </div>
-        <div class="popup-body">
-
-            <!--  --------------NEW------------------->
-            <div class="loader-container">
-                <!--  --------------LOADER------------------->
-                <div class="loader-wrap">
-                    <div class="loader-popup"></div>
+        <div class="datepicker"></div>
+        <div class="prices-block">
+            <h3 class="prices-block-header">Entrance Pass</h3>
+            <div class="prices-container">
+                <div class="prices-container-item">
+                    <p class="name-price">Adults</p>
+                    <div class="item-color green"></div>
+                    <p class="price-value">4,000</p>
                 </div>
-                <!--  --------------END LOADER------------------->
-
-                <!--  --------------TEXT MESSAGE------------------->
-                <div class="text-message" id="text-message"></div>
-                <!--  --------------END TEXT MESSAGE------------------->
+                <div class="prices-container-item">
+                    <div class="item-color light-yellow"></div>
+                    <p class="price-value">4,200</p>
+                </div>
+                <div class="prices-container-item">
+                    <div class="item-color yellow"></div>
+                    <p class="price-value">4,400</p>
+                </div>
+                <div class="prices-container-item">
+                    <div class="item-color pink"></div>
+                    <p class="price-value">4,600</p>
+                </div>
+                <div class="prices-container-item">
+                    <div class="item-color orange"></div>
+                    <p class="price-value">4,800</p>
+                </div>
             </div>
-            <!--  --------------END NEW------------------->
-
+        </div>
+        <div id="ticket-section">
+            <div class="ticket-category">
+                <div class="ticket-category-adult-label"><label for="adult-tickets">Adults</label></div>
+                <div class="ticket-category-counter">
+                    <button id="adult-minus" disabled>-</button>
+                    <input type="text" id="adult-tickets" value="0" readonly>
+                    <button id="adult-plus">+</button>
+                </div>
+            </div>
+            <div class="ticket-category">
+                <div class="ticket-category-child-label"><label for="child-tickets">Children</label></div>
+                <div class="ticket-category-counter">
+                    <button id="child-minus" >-</button>
+                    <input type="text" id="child-tickets" value="0" readonly>
+                    <button id="child-plus">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="dataPicker-next-button-container">
+            <div class="total-sum-container">
+                <p class="total-sum-label">Total sum: </p>
+                <p id="total-sum-counter"> 0 </p>
+            </div>
+            <button class="dataPicker-next-button">Next</button>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 <script>
-    const messages = [
-        "Загрузка данных...",
-        "Пожалуйста, подождите...",
-        "Скоро всё будет готово...",
-        "Формируем отчеты...",
-        "Почти готово..."
-    ];
+    const picker = new Litepicker({
+        element: document.querySelector('.datepicker'),
+        inlineMode: true,
+        singleMode: true,
+        numberOfMonths: 2,
+        numberOfColumns: 2,
+        minDate: new Date(),
+        setup: (picker) => {
+            picker.on('render', () => {
+                const days = document.querySelectorAll('.litepicker .day-item');
+                days.forEach(day => {
+                    const date = new Date(day.dataset.time * 1000);
+                    const dayOfWeek = date.getUTCDay();
+                    if (dayOfWeek === 3 || dayOfWeek === 2) {
+                        day.classList.add('weekend');
+                    } else {
+                        day.classList.add('weekday');
+                    }
+                });
+            });
 
-    let currentMessageIndex = 0;
-    const messageElement = document.getElementById('text-message');
+            picker.on('selected', (date) => {
+                const selectedDate = date.format('YYYY-MM-DD');
+                document.getElementById('selected-date').textContent = selectedDate;
+                document.getElementById('ticket-section').style.display = 'block';
+            });
+        }
+    });
+    const body = document.body;
+    document.getElementById('open-popup-button').addEventListener('click', () => {
+        document.getElementById('popup-container').style.display = 'flex';
+        body.classList.add('no-scroll');
+    });
 
-    function changeMessage() {
-        messageElement.classList.remove('fade-in');
-        setTimeout(() => {
-            messageElement.textContent = messages[currentMessageIndex];
-            messageElement.classList.add('fade-in');
-            currentMessageIndex = (currentMessageIndex + 1) % messages.length;
-        }, 500);
+    document.getElementById('popup-blur').addEventListener('click', () => {
+        document.getElementById('popup-container').style.display = 'none';
+        body.classList.remove('no-scroll');
+    });
+
+    document.getElementById('close-popup-button').addEventListener('click', () => {
+        document.getElementById('popup-container').style.display = 'none';
+        body.classList.remove('no-scroll');
+    });
+
+    function updateTickets(ticketInputId, increment) {
+        const ticketInput = document.getElementById(ticketInputId);
+        let currentValue = parseInt(ticketInput.value);
+        currentValue += increment;
+        if (currentValue < 0) currentValue = 0;
+        ticketInput.value = currentValue;
     }
 
-    setInterval(changeMessage, 3000);
-    changeMessage();
+    document.getElementById('adult-minus').addEventListener('click', () => updateTickets('adult-tickets', -1));
+    document.getElementById('adult-plus').addEventListener('click', () => updateTickets('adult-tickets', 1));
+    document.getElementById('child-minus').addEventListener('click', () => updateTickets('child-tickets', -1));
+    document.getElementById('child-plus').addEventListener('click', () => updateTickets('child-tickets', 1));
 </script>
 </body>
+
 </html>
