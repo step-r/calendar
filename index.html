@@ -130,7 +130,7 @@
 
         .dataPicker-container {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             flex-direction: column;
             position: relative;
@@ -272,6 +272,8 @@
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 8px 21px rgba(0, 0, 0, 0.7);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .dataPicker-popup-blur {
@@ -357,13 +359,9 @@
             .dataPicker-container{
                 width: 90%;
                 max-height: calc(100vh - 200px);
-                padding-top: 330px;
             }
             .prices-container{
                 justify-content: center;
-            }
-            .dataPicker-popup-header{
-                padding-top: 40px;
             }
         }
     </style>
